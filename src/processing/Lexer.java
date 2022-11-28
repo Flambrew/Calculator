@@ -52,7 +52,7 @@ public class Lexer {
                 tokens.add(new Token(TokenType.MOD));
                 advance();
             } else if (currentCharacter.matches("\\!")) {
-                tokens.add(new Token(TokenType.FACTORIAL));
+                tokens.add(new Token(TokenType.FACT));
                 advance();
             } else if (currentCharacter.matches("\\(")) {
                 tokens.add(new Token(TokenType.LPAREN));

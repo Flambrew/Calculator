@@ -11,7 +11,7 @@ public enum TokenType {
     COS(Group.PRE_FUNC),
     TAN(Group.PRE_FUNC),
     ABS(Group.PRE_FUNC),
-    FACTORIAL(Group.POST_FUNC),
+    FACT(Group.POST_FUNC),
     LPAREN(Group.PAREN),
     RPAREN(Group.PAREN),
     NUM(Group.VALUE),
