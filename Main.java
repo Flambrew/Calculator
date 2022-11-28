@@ -29,7 +29,6 @@ public class Main {
                 lx = new Lexer(function);
                 tokens = lx.createTokens();
                 System.out.println(Arrays.deepToString(tokens));
-
     
                 pr = new Parser(tokens);
                 ast = pr.parse();
