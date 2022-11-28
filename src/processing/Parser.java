@@ -42,8 +42,9 @@ public class Parser {
                 Node right = expression();
                 if (currentToken.isA(TT.RPAREN)) {
                     advance();
-                    if (currentToken.isA(TT.FACT)) {
-                        return new FunctionNode(TT.FACT, new FunctionNode(left, right));
+                    if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                        advance();
+                        return new FunctionNode(currentToken, new FunctionNode(left, right));
                     }
                     return new FunctionNode(left, right);
                 }
@@ -54,8 +55,9 @@ public class Parser {
             Node value = expression();
             if (currentToken.isA(TT.RPAREN)) {
                 advance();
-                if (currentToken.isA(TT.FACT)) {
-                    return new FunctionNode(TT.FACT, new FunctionNode(value));
+                if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                    advance();
+                    return new FunctionNode(currentToken, new FunctionNode(value));
                 }
                 return new FunctionNode(value);
             }
@@ -64,8 +66,9 @@ public class Parser {
             if (currentToken.isA(TT.SUB)) {
                 advance();
                 if (currentToken.isA(TGroup.PRE_FUNC, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
-                    if (currentToken.isA(TT.FACT)) {
-                        return new FunctionNode(TT.FACT, new OperationNode(0, TT.SUB, factor()));
+                    if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                        advance();
+                        return new FunctionNode(currentToken, new OperationNode(0, TT.SUB, factor()));
                     }
                     return new OperationNode(0, TT.SUB, factor());
                 }
@@ -73,8 +76,9 @@ public class Parser {
             }
             left = currentToken;
             advance();
-            if (currentToken.isA(TT.FACT)) {
-                return new FunctionNode(TT.FACT, new NumberNode(left));
+            if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                advance();
+                return new FunctionNode(currentToken, new NumberNode(left));
             }
             return new NumberNode(left);
         }
