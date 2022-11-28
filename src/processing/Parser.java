@@ -106,6 +106,9 @@ public class Parser {
             Node right = term();
             left = new OperationNode(left, opToken, right);
         }
+        if (currentToken.isA(TokenType.FACT)) {
+            return new FunctionNode(TokenType.FACT, left);
+        }
         if (!(currentToken == null || currentToken.isA(Group.OPERATION, Group.POST_FUNC)
                 || currentToken.isA(TokenType.RPAREN)))
             throw new IllegalSyntaxException("Missing token of type: [OPERATION|POST_FUNC|RPAREN]");
