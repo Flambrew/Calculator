@@ -1,11 +1,11 @@
 import java.util.Arrays;
 
-import src.exceptions.IllegalSyntaxException;
-import src.exceptions.IllegalTokenException;
 import src.nodes.Node;
 import src.processing.Lexer;
 import src.processing.Parser;
 import src.tokens.Token;
+
+import src.exceptions.*;
 
 public class Main {
     public static void main(String[] args) {
