@@ -1,5 +1,6 @@
 package src.processing;
 
+import src.exceptions.IllegalOperationException;
 import src.nodes.FunctionNode;
 import src.nodes.Node;
 import src.nodes.NumberNode;
@@ -7,15 +8,22 @@ import src.nodes.OperationNode;
 
 public class Interpreter {
 
-    public NumberNode calculate(Node node, Variable... givenValues) {
+    public NumberNode calculate(Node node, Variable... givenValues) throws IllegalOperationException {
 
         if (node instanceof NumberNode)
             return new NumberNode(node.VALUE);
 
-        while (!(node.parts()[0] instanceof NumberNode || node.parts()[1] instanceof NumberNode)) {
+        while (node.parts() != null && !(node.parts()[0] instanceof NumberNode || node.parts()[1] instanceof NumberNode)) {
 
-            node = node instanceof OperationNode ? calculate(node.parts()[0].clone()) : calculate(node.parts()[1].clone());
+            if (node instanceof OperationNode) {
 
+                node = calculate(new OperationNode(calculate(node.parts()[0].clone()), node.parts()[1], node.parts()[2]));
+
+            } else if (node instanceof FunctionNode) {
+
+                node = calculate(new FunctionNode(node.parts()[0].OPERATOR, calculate(node.parts()[1].clone())));
+
+            } 
         }
 
         if (node instanceof OperationNode) {
@@ -40,8 +48,8 @@ public class Interpreter {
         }
 
         if (node instanceof FunctionNode) {
-            double operand = node.parts()[1].VALUE;
             if (node.parts()[0].OPERATOR != null) {
+                double operand = calculate(node.parts()[1]).VALUE;
                 switch (node.parts()[0].OPERATOR) {
                     case SIN:
                         return new NumberNode(Math.sin(operand));
@@ -63,7 +71,7 @@ public class Interpreter {
                         return new NumberNode(Math.exp(operand));
                     case FAC:
                         if (Math.abs(operand - (int) operand) > 0.000001)
-                            return null;
+                            throw new IllegalOperationException("Cannot compute the factorial of a rational expression.");
                         double out = 1;
                         for (int i = 1; i <= operand; i++)
                             out *= i;
@@ -72,9 +80,9 @@ public class Interpreter {
                         return null;
                 }
             }
-            return new NumberNode(operand);
+            return new NumberNode(node.parts()[0].VALUE);
         }
 
-        return null;
+        return new NumberNode(node.VALUE);
     }
 }

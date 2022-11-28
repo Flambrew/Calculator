@@ -4,7 +4,7 @@ import src.tokens.Token;
 
 public class OperationNode extends Node {
 
-    private final Node LEFT_NODE, OP_TOKEN, RIGHT_NODE;
+    private Node LEFT_NODE, OP_TOKEN, RIGHT_NODE;
 
     public OperationNode(Node leftNode, Token opToken, Node rightNode) {
         this.LEFT_NODE = leftNode;

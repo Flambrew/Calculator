@@ -5,7 +5,7 @@ import src.tokens.Token;
 
 public class FunctionNode extends Node {
 
-    private final Node EXPRESSION;
+    private Node EXPRESSION;
 
     public FunctionNode(Node expression) {
         this.EXPRESSION = expression;
