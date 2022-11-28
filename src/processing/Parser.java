@@ -7,24 +7,19 @@ import src.nodes.*;
 
 public class Parser {
 
-    Integer position;
-
     Token[] tokens;
     Token currentToken;
-
-    public Parser(Token[] tokens) {
-        this.tokens = tokens;
-        this.position = -1;
-        this.currentToken = null;
-        advance();
-    }
+    Integer position;
 
     private void advance() {
         position++;
         currentToken = position < tokens.length ? tokens[position] : null;
     }
 
-    public Node parse() throws IllegalSyntaxException {
+    public Node parse(Token[] tokens) throws IllegalSyntaxException {
+        this.tokens = tokens;
+        this.position = -1;
+        advance();
         return expression();
     }
 
@@ -59,7 +54,7 @@ public class Parser {
                 return new FunctionNode(value);
             }
             throw new IllegalSyntaxException(String.format("Parameter for %s unspecified. (check parens)", left));
-        } else if (currentToken.isA(TT.NUM, TT.SUB)) {
+        } else if (currentToken.isA(TGroup.VALUE) || currentToken.isA(TT.SUB)) {
             if (currentToken.isA(TT.SUB)) {
                 advance();
                 if (currentToken.isA(TGroup.PREFIX, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
@@ -71,7 +66,7 @@ public class Parser {
                     }
                     return new OperationNode(new NumberNode(new Token(TT.NUM, 0)), new Token(TT.SUB), factor());
                 }
-                throw new IllegalSyntaxException("Missing token of type: [PREFIX|NUM|LPAREN]");
+                throw new IllegalSyntaxException("Missing token of type: [PREFIX|VALUE|LPAREN]");
             }
             left = currentToken;
             advance();
@@ -82,7 +77,7 @@ public class Parser {
             }
             return new NumberNode(left);
         }
-        throw new IllegalSyntaxException("Missing token of type: [PREFIX|NUM|LPAREN]");
+        throw new IllegalSyntaxException("Missing token of type: [PREFIX|VALUE|LPAREN]");
     }
 
     private Node expo() throws IllegalSyntaxException {

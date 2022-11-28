@@ -1,13 +1,16 @@
 package src.nodes;
 
-public class Node {
+import src.tokens.Token;
 
-    public final Double VALUE;
+public class OperatorNode extends Node {
 
-    public Node(Double value) {
-        this.VALUE = value;
+    private final Token OPERATOR;
+
+    public OperatorNode(Token token) {
+        super(null);
+        this.OPERATOR = token;
     }
-    
+
     public Node[] parts() {
         return null;
     }
@@ -19,4 +22,5 @@ public class Node {
     public String toString() {
         return null;
     }
+
 }

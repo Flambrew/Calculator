@@ -9,20 +9,14 @@ import src.exceptions.*;
 
 public class Lexer {
 
-    private Integer position;
-
     private String text;
     private String currentCharacter;
+    private Integer position;
 
-    public Lexer(String in) {
+    public Token[] createTokens(String in) throws IllegalTokenException, IllegalSyntaxException {
         this.text = in.replaceAll("[\\[\\{]", "(").replaceAll("[\\]\\}]", ")");
         this.position = -1;
-        this.currentCharacter = null;
         advance();
-    }
-
-    public Token[] createTokens() throws IllegalTokenException, IllegalSyntaxException {
-
         ArrayList<Token> tokens = new ArrayList<Token>();
         while (currentCharacter != null) {
             if (!verifyParens()) {
@@ -84,42 +78,31 @@ public class Lexer {
     private Token parseWord() throws IllegalTokenException {
         int length = 0;
         String out = "";
-        while (currentCharacter != null && currentCharacter.matches("[a-zA-Z]")) {
+        do {
             length++;
             out += currentCharacter;
             advance();
-        }
-        if (length == 1) {
-            return new Token(TT.VAR, out);
-        }
+        } while (currentCharacter != null && currentCharacter.matches("[0-9a-zA-Z]"));
         if (out.matches("SIN")) {
             return new Token(TT.SIN);
-        }
-        if (out.matches("COS")) {
+        } else if (out.matches("COS")) {
             return new Token(TT.COS);
-        }
-        if (out.matches("TAN")) {
+        } else if (out.matches("TAN")) {
             return new Token(TT.TAN);
-        }
-        if (out.matches("CSC")) {
+        } else if (out.matches("CSC")) {
             return new Token(TT.CSC);
-        }
-        if (out.matches("SEC")) {
+        } else if (out.matches("SEC")) {
             return new Token(TT.SEC);
-        }
-        if (out.matches("COT")) {
+        } else if (out.matches("COT")) {
             return new Token(TT.COT);
-        }
-        if (out.matches("ABS")) {
+        } else if (out.matches("ABS")) {
             return new Token(TT.ABS);
-        }
-        if (out.matches("LOG")) {
+        } else if (out.matches("LOG")) {
             return new Token(TT.LOG);
-        }
-        if (out.matches("EXP")) {
+        } else if (out.matches("EXP")) {
             return new Token(TT.EXP);
         }
-        throw new IllegalTokenException(String.format("Token \"%s\" is invalid.", out)); // TODO: add functions
+        return new Token(TT.VAR, out);
     }
 
     private Token parseNumber() {
