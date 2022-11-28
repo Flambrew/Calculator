@@ -11,11 +11,13 @@ import src.tokens.Token;
 
 public class Main {
     public static void main(String[] args) {
-        for (int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length || i < 1; i++) {
 
             System.out.println();
 
-            String function = args[i];
+            // String function = args[i];
+            String function = "1 + 2 - abs(3 * 4 / sin[5 ^ cos{6}])! % -tan(7)";
+
             Lexer lx = null;
             Token[] tokens = null;
             Parser pr = null;

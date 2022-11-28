@@ -1,6 +1,6 @@
 package src.tokens;
 
-public enum Group {
+public enum TGroup {
     OPERATION,
     PRE_FUNC,
     POST_FUNC,
