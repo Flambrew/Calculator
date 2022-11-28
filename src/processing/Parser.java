@@ -1,13 +1,9 @@
 package src.processing;
 
 import src.exceptions.IllegalSyntaxException;
-import src.nodes.OperationNode;
-import src.nodes.FunctionNode;
-import src.nodes.NumberNode;
-import src.nodes.Node;
-import src.tokens.TGroup;
-import src.tokens.Token;
-import src.tokens.TT;
+
+import src.tokens.*;
+import src.nodes.*;
 
 public class Parser {
 
@@ -70,9 +66,10 @@ public class Parser {
                     if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                         Token function = currentToken;
                         advance();
-                        return new FunctionNode(function, new OperationNode(0, TT.SUB, factor()));
+                        return new FunctionNode(function,
+                                new OperationNode(new NumberNode(new Token(TT.NUM, 0)), new Token(TT.SUB), factor()));
                     }
-                    return new OperationNode(0, TT.SUB, factor());
+                    return new OperationNode(new NumberNode(new Token(TT.NUM, 0)), new Token(TT.SUB), factor());
                 }
                 throw new IllegalSyntaxException("Missing token of type: [PREFIX|NUM|LPAREN]");
             }

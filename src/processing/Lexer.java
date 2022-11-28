@@ -2,10 +2,10 @@ package src.processing;
 
 import java.util.ArrayList;
 
-import src.exceptions.IllegalSyntaxException;
-import src.exceptions.IllegalTokenException;
 import src.tokens.Token;
 import src.tokens.TT;
+
+import src.exceptions.*;
 
 public class Lexer {
 
