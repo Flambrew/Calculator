@@ -5,12 +5,13 @@ import src.nodes.Node;
 import src.nodes.NumberNode;
 import src.nodes.OperationNode;
 import src.tokens.TT;
+import src.tokens.Token;
 
 public class Interpreter {
 
     public NumberNode calculate(Node node, Variable... givenValues) {
         
-        if (node instanceof NumberNode) return new NumberNode(TT.NUM, node.VALUE);
+        if (node instanceof NumberNode) return new NumberNode(new Token(TT.NUM, node.VALUE));
         
         while (!(node.parts()[0] instanceof NumberNode)) { // until NODE has been converted to a number
 
