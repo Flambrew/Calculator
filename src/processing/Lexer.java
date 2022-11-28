@@ -52,7 +52,7 @@ public class Lexer {
                 tokens.add(new Token(TT.MOD));
                 advance();
             } else if (currentCharacter.matches("\\!")) {
-                tokens.add(new Token(TT.FACT));
+                tokens.add(new Token(TT.FAC));
                 advance();
             } else if (currentCharacter.matches("\\(")) {
                 tokens.add(new Token(TT.LPAREN));
@@ -81,7 +81,7 @@ public class Lexer {
         return true;
     }
 
-    private Token parseWord() {
+    private Token parseWord() throws IllegalTokenException {
         int length = 0;
         String out = "";
         while (currentCharacter != null && currentCharacter.matches("[a-zA-Z]")) {
@@ -101,10 +101,25 @@ public class Lexer {
         if (out.matches("TAN")) {
             return new Token(TT.TAN);
         }
+        if (out.matches("CSC")) {
+            return new Token(TT.CSC);
+        }
+        if (out.matches("SEC")) {
+            return new Token(TT.SEC);
+        }
+        if (out.matches("COT")) {
+            return new Token(TT.COT);
+        }
         if (out.matches("ABS")) {
             return new Token(TT.ABS);
         }
-        return null; // TODO: add more word things
+        if (out.matches("LOG")) {
+            return new Token(TT.LOG);
+        }
+        if (out.matches("EXP")) {
+            return new Token(TT.EXP);
+        }
+        throw new IllegalTokenException(String.format("Token \"%s\" is invalid.", out)); // TODO: add functions
     }
 
     private Token parseNumber() {

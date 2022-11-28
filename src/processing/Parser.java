@@ -3,8 +3,8 @@ package src.processing;
 import src.exceptions.IllegalSyntaxException;
 import src.nodes.OperationNode;
 import src.nodes.FunctionNode;
-import src.nodes.Node;
 import src.nodes.NumberNode;
+import src.nodes.Node;
 import src.tokens.TGroup;
 import src.tokens.Token;
 import src.tokens.TT;
@@ -32,17 +32,16 @@ public class Parser {
         return expression();
     }
 
-    // TODO implement variables
-    private Node factor() throws IllegalSyntaxException {
+    private Node factor() throws IllegalSyntaxException { // TODO implement variables
         Token left = currentToken;
-        if (left.isA(TGroup.PRE_FUNC)) {
+        if (left.isA(TGroup.PREFIX)) {
             advance();
             if (currentToken.isA(TT.LPAREN)) {
                 advance();
                 Node right = expression();
                 if (currentToken.isA(TT.RPAREN)) {
                     advance();
-                    if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                    if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                         Token function = currentToken;
                         advance();
                         return new FunctionNode(function, new FunctionNode(left, right));
@@ -56,7 +55,7 @@ public class Parser {
             Node value = expression();
             if (currentToken.isA(TT.RPAREN)) {
                 advance();
-                if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                     Token function = currentToken;
                     advance();
                     return new FunctionNode(function, new FunctionNode(value));
@@ -67,26 +66,26 @@ public class Parser {
         } else if (currentToken.isA(TT.NUM, TT.SUB)) {
             if (currentToken.isA(TT.SUB)) {
                 advance();
-                if (currentToken.isA(TGroup.PRE_FUNC, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
-                    if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                if (currentToken.isA(TGroup.PREFIX, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
+                    if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                         Token function = currentToken;
                         advance();
                         return new FunctionNode(function, new OperationNode(0, TT.SUB, factor()));
                     }
                     return new OperationNode(0, TT.SUB, factor());
                 }
-                throw new IllegalSyntaxException("Missing token of type: [PRE_FUNC|NUM|LPAREN]");
+                throw new IllegalSyntaxException("Missing token of type: [PREFIX|NUM|LPAREN]");
             }
             left = currentToken;
             advance();
-            if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+            if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                 Token function = currentToken;
                 advance();
                 return new FunctionNode(function, new NumberNode(left));
             }
             return new NumberNode(left);
         }
-        throw new IllegalSyntaxException("Missing token of type: [PRE_FUNC|NUM|LPAREN]");
+        throw new IllegalSyntaxException("Missing token of type: [PREFIX|NUM|LPAREN]");
     }
 
     private Node expo() throws IllegalSyntaxException {
@@ -97,9 +96,9 @@ public class Parser {
             Node right = factor();
             left = new OperationNode(left, opToken, right);
         }
-        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.POST_FUNC)
+        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX)
                 || currentToken.isA(TT.RPAREN)))
-            throw new IllegalSyntaxException("Missing token of type: [OPERATION|POST_FUNC|RPAREN]");
+            throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
 
@@ -111,9 +110,9 @@ public class Parser {
             Node right = expo();
             left = new OperationNode(left, opToken, right);
         }
-        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.POST_FUNC)
+        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX)
                 || currentToken.isA(TT.RPAREN)))
-            throw new IllegalSyntaxException("Missing token of type: [OPERATION|POST_FUNC|RPAREN]");
+            throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
 
@@ -125,11 +124,9 @@ public class Parser {
             Node right = term();
             left = new OperationNode(left, opToken, right);
         }
-        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.POST_FUNC)
+        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX)
                 || currentToken.isA(TT.RPAREN)))
-            throw new IllegalSyntaxException("Missing token of type: [OPERATION|POST_FUNC|RPAREN]");
+            throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
 }
-
-// figure this shit out tomorrow morning

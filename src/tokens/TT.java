@@ -2,31 +2,30 @@ package src.tokens;
 
 public enum TT {
 
+    NUM(TGroup.VALUE),
+    VAR(TGroup.VALUE),
+
+    SIN(TGroup.PREFIX),
+    COS(TGroup.PREFIX),
+    TAN(TGroup.PREFIX),
+    CSC(TGroup.PREFIX),
+    SEC(TGroup.PREFIX),
+    COT(TGroup.PREFIX),
+    ABS(TGroup.PREFIX),
+    LOG(TGroup.PREFIX),
+    EXP(TGroup.PREFIX),
+
+    FAC(TGroup.SUFFIX),
+
+    LPAREN(TGroup.PAREN),
+    RPAREN(TGroup.PAREN),
+
     ADD(TGroup.OPERATION),
     SUB(TGroup.OPERATION),
     MUL(TGroup.OPERATION),
     DIV(TGroup.OPERATION),
     POW(TGroup.OPERATION),
-    MOD(TGroup.OPERATION),
-
-    SIN(TGroup.PRE_FUNC),
-    COS(TGroup.PRE_FUNC),
-    TAN(TGroup.PRE_FUNC),
-    CSC(TGroup.PRE_FUNC),
-    SEC(TGroup.PRE_FUNC),
-    COT(TGroup.PRE_FUNC),
-    
-    ABS(TGroup.PRE_FUNC),
-    LOG(TGroup.PRE_FUNC),
-    EXP(TGroup.PRE_FUNC),
-
-    FACT(TGroup.POST_FUNC),
-
-    LPAREN(TGroup.PAREN),
-    RPAREN(TGroup.PAREN),
-
-    NUM(TGroup.VALUE),
-    VAR(TGroup.VALUE);
+    MOD(TGroup.OPERATION);
 
     private TGroup group;
 

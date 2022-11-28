@@ -1,6 +1,7 @@
 package src.nodes;
 
 import src.tokens.Token;
+
 public class FunctionNode extends Node {
 
     public final Token FUNCTION;

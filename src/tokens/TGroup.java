@@ -2,8 +2,8 @@ package src.tokens;
 
 public enum TGroup {
     OPERATION,
-    PRE_FUNC,
-    POST_FUNC,
+    PREFIX,
+    SUFFIX,
     PAREN,
     VALUE;
 }

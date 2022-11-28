@@ -15,7 +15,7 @@ public class Main {
 
             System.out.println();
 
-            String function = args.length > 0 ? args[i] : "1 + 2 - abs(3 * 4 / sin[5 ^ cos{6}])! % -tan(7)";
+            String function = args.length > 0 ? args[i] : "1 + 2 - abs(3 * 4 / sin[5 ^ csc{6}])! % -tan(7)";
             Lexer lx = null;
             Token[] tokens = null;
             Parser pr = null;
