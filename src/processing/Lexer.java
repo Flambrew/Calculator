@@ -77,10 +77,8 @@ public class Lexer {
     }
 
     private Token parseWord() throws IllegalTokenException {
-        int length = 0;
         String out = "";
         do {
-            length++;
             out += currentCharacter;
             advance();
         } while (currentCharacter != null && currentCharacter.matches("[0-9a-zA-Z]"));

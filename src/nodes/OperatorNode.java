@@ -22,5 +22,4 @@ public class OperatorNode extends Node {
     public String toString() {
         return OPERATOR.toString();
     }
-
 }

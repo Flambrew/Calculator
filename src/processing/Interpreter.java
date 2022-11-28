@@ -10,20 +10,13 @@ public class Interpreter {
 
     public NumberNode calculate(Node node, Variable... givenValues) throws IllegalOperationException {
 
-        if (node instanceof NumberNode)
+        if (node instanceof NumberNode) 
             return new NumberNode(node.VALUE);
-
         while (node.parts() != null && !(node.parts()[0] instanceof NumberNode || node.parts()[1] instanceof NumberNode)) {
-
-            if (node instanceof OperationNode) {
-
+            if (node instanceof OperationNode)
                 node = calculate(new OperationNode(calculate(node.parts()[0].clone()), node.parts()[1], node.parts()[2]));
-
-            } else if (node instanceof FunctionNode) {
-
+            else if (node instanceof FunctionNode) 
                 node = calculate(new FunctionNode(node.parts()[0].OPERATOR, calculate(node.parts()[1].clone())));
-
-            } 
         }
 
         if (node instanceof OperationNode) {
@@ -82,7 +75,6 @@ public class Interpreter {
             }
             return new NumberNode(node.parts()[0].VALUE);
         }
-
         return new NumberNode(node.VALUE);
     }
 }

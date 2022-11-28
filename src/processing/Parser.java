@@ -11,12 +11,12 @@ import src.tokens.TGroup;
 import src.tokens.Token;
 import src.tokens.TT;
 
-
 public class Parser {
 
     Token[] tokens;
     Token currentToken;
     Integer position;
+
     public Node parse(Token[] tokens) throws IllegalSyntaxException {
         this.tokens = tokens;
         this.position = -1;
@@ -89,8 +89,7 @@ public class Parser {
             Node right = factor();
             left = new OperationNode(left, opToken, right);
         }
-        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX)
-                || currentToken.isA(TT.RPAREN)))
+        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX) || currentToken.isA(TT.RPAREN)))
             throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
@@ -103,8 +102,7 @@ public class Parser {
             Node right = expo();
             left = new OperationNode(left, opToken, right);
         }
-        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX)
-                || currentToken.isA(TT.RPAREN)))
+        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX) || currentToken.isA(TT.RPAREN)))
             throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
@@ -117,8 +115,7 @@ public class Parser {
             Node right = term();
             left = new OperationNode(left, opToken, right);
         }
-        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX)
-                || currentToken.isA(TT.RPAREN)))
+        if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX) || currentToken.isA(TT.RPAREN)))
             throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
@@ -127,5 +124,4 @@ public class Parser {
         position++;
         currentToken = position < tokens.length ? tokens[position] : null;
     }
-
 }
