@@ -11,9 +11,12 @@ import src.exceptions.*;
 
 public class Main {
     public static void main(String[] args) {
+
         for (int i = 0; i < args.length || i < 1; i++) {
 
-            String function = args.length > 0 ? args[i] : "3!";
+            // "1 + 2 - abs(3 * 4! / sin[5 ^ cos{6}]) % -tan(7)"
+
+            String function = args.length > 0 ? args[i] : "1 + 2 - abs(3 * 4! / sin[5 ^ cos{6}]) % -tan(7)";
             Lexer lx = new Lexer();
             Parser pr = new Parser();
             Interpreter in = new Interpreter();
@@ -29,11 +32,13 @@ public class Main {
                 System.out.println(ast.toString());
 
                 NumberNode out = in.calculate(ast);
-                System.out.println(out.toString());
+                System.out.printf("%f", out.VALUE);
     
             } catch (IllegalTokenException e) {
                 e.printStackTrace();
             } catch (IllegalSyntaxException e) {
+                e.printStackTrace();
+            } catch (IllegalOperationException e) {
                 e.printStackTrace();
             }
         }
