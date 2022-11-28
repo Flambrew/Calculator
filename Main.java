@@ -11,10 +11,8 @@ import src.exceptions.*;
 
 public class Main {
     public static void main(String[] args) {
-
+        
         for (int i = 0; i < args.length || i < 1; i++) {
-
-            // "1 + 2 - abs(3 * 4! / sin[5 ^ cos{6}]) % -tan(7)"
 
             String function = args.length > 0 ? args[i] : "1 + 2 - abs(3 * 4! / sin[5 ^ cos{6}]) % -tan(7)";
             Lexer lx = new Lexer();
@@ -42,7 +40,5 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        
-        System.out.println();
     }
 }
