@@ -1,8 +1,6 @@
 package src.nodes;
 
 import src.tokens.Token;
-import src.tokens.TT;
-
 public class FunctionNode extends Node {
 
     public final Token FUNCTION;
@@ -15,11 +13,6 @@ public class FunctionNode extends Node {
 
     public FunctionNode(Token function, Node expression) {
         this.FUNCTION = function;
-        this.EXPRESSION = expression;
-    }
-
-    public FunctionNode(TT function, Node expression) {
-        this.FUNCTION = new Token(function);
         this.EXPRESSION = expression;
     }
 

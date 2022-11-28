@@ -43,8 +43,9 @@ public class Parser {
                 if (currentToken.isA(TT.RPAREN)) {
                     advance();
                     if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                        Token function = currentToken;
                         advance();
-                        return new FunctionNode(currentToken, new FunctionNode(left, right));
+                        return new FunctionNode(function, new FunctionNode(left, right));
                     }
                     return new FunctionNode(left, right);
                 }
@@ -56,8 +57,9 @@ public class Parser {
             if (currentToken.isA(TT.RPAREN)) {
                 advance();
                 if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                    Token function = currentToken;
                     advance();
-                    return new FunctionNode(currentToken, new FunctionNode(value));
+                    return new FunctionNode(function, new FunctionNode(value));
                 }
                 return new FunctionNode(value);
             }
@@ -67,8 +69,9 @@ public class Parser {
                 advance();
                 if (currentToken.isA(TGroup.PRE_FUNC, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
                     if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                        Token function = currentToken;
                         advance();
-                        return new FunctionNode(currentToken, new OperationNode(0, TT.SUB, factor()));
+                        return new FunctionNode(function, new OperationNode(0, TT.SUB, factor()));
                     }
                     return new OperationNode(0, TT.SUB, factor());
                 }
@@ -77,8 +80,9 @@ public class Parser {
             left = currentToken;
             advance();
             if (currentToken != null && currentToken.isA(TGroup.POST_FUNC)) {
+                Token function = currentToken;
                 advance();
-                return new FunctionNode(currentToken, new NumberNode(left));
+                return new FunctionNode(function, new NumberNode(left));
             }
             return new NumberNode(left);
         }
