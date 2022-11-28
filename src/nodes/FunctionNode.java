@@ -1,38 +1,35 @@
 package src.nodes;
 
+import src.tokens.TT;
 import src.tokens.Token;
 
 public class FunctionNode extends Node {
 
-    private final Node FUNCTION, EXPRESSION;
+    private final Node EXPRESSION;
 
     public FunctionNode(Node expression) {
-        super(null);
-        this.FUNCTION = null;
         this.EXPRESSION = expression;
     }
 
     public FunctionNode(Token function, Node expression) {
-        super(null);
-        this.FUNCTION = new OperatorNode(function);
+        super(null, function.TOKEN_TYPE);
         this.EXPRESSION = expression;
     }
 
-    public FunctionNode(Node function, Node expression) {
-        super(null);
-        this.FUNCTION = function;
+    public FunctionNode(TT function, Node expression) {
+        super(null, function);
         this.EXPRESSION = expression;
     }
 
     public Node[] parts() {
-        return FUNCTION != null ? new Node[] {FUNCTION, EXPRESSION} : new Node[] {EXPRESSION};
+        return OPERATOR != null ? new Node[] {new OperatorNode(new Token(OPERATOR)), EXPRESSION} : new Node[] {EXPRESSION};
     }
 
     public FunctionNode clone() {
-        return FUNCTION != null ? new FunctionNode(FUNCTION, EXPRESSION.clone()) : new FunctionNode(EXPRESSION.clone());
+        return OPERATOR != null ? new FunctionNode(OPERATOR, EXPRESSION.clone()) : new FunctionNode(EXPRESSION.clone());
     }
 
     public String toString() {
-        return FUNCTION != null ? String.format("(%s, %s)", FUNCTION, EXPRESSION) : EXPRESSION.toString();
+        return OPERATOR != null ? String.format("(%s, %s)", OPERATOR, EXPRESSION) : EXPRESSION.toString();
     }
 }

@@ -1,15 +1,15 @@
 package src.processing;
 
 public class Variable {
-    private final Character NAME;
+    private final String NAME;
     private final Double VALUE;
 
-    public Variable(char name, double value) {
+    public Variable(String name, double value) {
         this.NAME = name;
         this.VALUE = value;
     }
 
-    public Character getNAME() {
+    public String getNAME() {
         return NAME;
     }
 

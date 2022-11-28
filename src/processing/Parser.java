@@ -2,20 +2,21 @@ package src.processing;
 
 import src.exceptions.IllegalSyntaxException;
 
-import src.tokens.*;
-import src.nodes.*;
+import src.nodes.OperationNode;
+import src.nodes.FunctionNode;
+import src.nodes.NumberNode;
+import src.nodes.Node;
+
+import src.tokens.TGroup;
+import src.tokens.Token;
+import src.tokens.TT;
+
 
 public class Parser {
 
     Token[] tokens;
     Token currentToken;
     Integer position;
-
-    private void advance() {
-        position++;
-        currentToken = position < tokens.length ? tokens[position] : null;
-    }
-
     public Node parse(Token[] tokens) throws IllegalSyntaxException {
         this.tokens = tokens;
         this.position = -1;
@@ -121,4 +122,10 @@ public class Parser {
             throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
         return left;
     }
+
+    private void advance() {
+        position++;
+        currentToken = position < tokens.length ? tokens[position] : null;
+    }
+
 }
