@@ -17,7 +17,7 @@ public class Lexer {
     private Integer position;
 
     public Token[] createTokens(String in) throws IllegalTokenException, IllegalSyntaxException, IllegalArgumentException {
-        if (in == null || in.matches("^ *$")) {
+        if (in.matches("^ *$")) {
             throw new IllegalArgumentException();
         }
         this.text = in.replaceAll("[\\[\\{]", "(").replaceAll("[\\]\\}]", ")");

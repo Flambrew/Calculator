@@ -13,23 +13,24 @@ public class Interpreter {
         if (node instanceof NumberNode)
             if (node.VALUE != null)
                 return new NumberNode(node.VALUE);
-        for (Variable var : givenValues) {
-            if (node.VARIABLE.NAME.equals(var.getNAME())) {
-                return new NumberNode(node.VARIABLE.VALUE);
-            }
-        }
+            else
+                for (Variable var : givenValues) {
+                    if (node.VARIABLE.NAME.equals(var.getNAME().toUpperCase())) {
+                        return new NumberNode(var.getVALUE());
+                    }
+                }
         while (node.parts() != null
                 && !(node.parts()[0] instanceof NumberNode || node.parts()[1] instanceof NumberNode)) {
             if (node instanceof OperationNode)
                 node = calculate(
-                        new OperationNode(calculate(node.parts()[0].clone()), node.parts()[1], node.parts()[2]));
+                        new OperationNode(calculate(node.parts()[0].clone(), givenValues), node.parts()[1], node.parts()[2]), givenValues);
             else if (node instanceof FunctionNode)
-                node = calculate(new FunctionNode(node.parts()[0].OPERATOR, calculate(node.parts()[1].clone())));
+                node = calculate(new FunctionNode(node.parts()[0].OPERATOR, calculate(node.parts()[1].clone(), givenValues)), givenValues);
         }
 
         if (node instanceof OperationNode) {
             double operandA = node.parts()[0].VALUE;
-            double operandB = calculate(node.parts()[2]).VALUE;
+            double operandB = calculate(node.parts()[2], givenValues).VALUE;
             switch (node.parts()[1].OPERATOR) {
                 case ADD:
                     return new NumberNode(operandA + operandB);
@@ -50,7 +51,7 @@ public class Interpreter {
 
         if (node instanceof FunctionNode) {
             if (node.parts()[0].OPERATOR != null) {
-                double operand = calculate(node.parts()[1]).VALUE;
+                double operand = calculate(node.parts()[1], givenValues).VALUE;
                 switch (node.parts()[0].OPERATOR) {
                     case SIN:
                         return new NumberNode(Math.sin(operand));

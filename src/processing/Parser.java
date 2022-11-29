@@ -53,7 +53,7 @@ public class Parser {
                         advance();
                         return new FunctionNode(function, new FunctionNode(value));
                     }
-                    return new FunctionNode(value);
+                    return value;
                 }
                 throw new IllegalSyntaxException(SyntaxErrors.FUNCTION_PARAMETER_UNDEFINED, left.toString());
             } else if (currentToken.isA(TT.SUB)) {
