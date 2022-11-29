@@ -1,7 +1,7 @@
 package src.processing;
 
 import src.exceptions.IllegalSyntaxException;
-
+import src.exceptions.IllegalSyntaxException.SyntaxErrors;
 import src.nodes.OperationNode;
 import src.nodes.FunctionNode;
 import src.nodes.NumberNode;
@@ -24,39 +24,39 @@ public class Parser {
         return expression();
     }
 
-    private Node factor() throws IllegalSyntaxException { // TODO implement variables
+    private Node factor() throws IllegalSyntaxException {
         Token left = currentToken;
-        if (left != null && left.isA(TGroup.PREFIX)) {
-            advance();
-            if (currentToken.isA(TT.LPAREN)) {
+        if (left != null) {
+            if (left.isA(TGroup.PREFIX)) {
                 advance();
-                Node right = expression();
+                if (currentToken.isA(TT.LPAREN)) {
+                    advance();
+                    Node right = expression();
+                    if (currentToken.isA(TT.RPAREN)) {
+                        advance();
+                        if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
+                            Token function = currentToken;
+                            advance();
+                            return new FunctionNode(function, new FunctionNode(left, right));
+                        }
+                        return new FunctionNode(left, right);
+                    }
+                }
+                throw new IllegalSyntaxException(SyntaxErrors.FUNCTION_PARAMETER_UNDEFINED, left.toString());
+            } else if (currentToken.isA(TT.LPAREN)) {
+                advance();
+                Node value = expression();
                 if (currentToken.isA(TT.RPAREN)) {
                     advance();
                     if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                         Token function = currentToken;
                         advance();
-                        return new FunctionNode(function, new FunctionNode(left, right));
+                        return new FunctionNode(function, new FunctionNode(value));
                     }
-                    return new FunctionNode(left, right);
+                    return new FunctionNode(value);
                 }
-            }
-            throw new IllegalSyntaxException(String.format("Parameter for %s unspecified. (check parens)", left));
-        } else if (left != null && currentToken.isA(TT.LPAREN)) {
-            advance();
-            Node value = expression();
-            if (currentToken.isA(TT.RPAREN)) {
-                advance();
-                if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
-                    Token function = currentToken;
-                    advance();
-                    return new FunctionNode(function, new FunctionNode(value));
-                }
-                return new FunctionNode(value);
-            }
-            throw new IllegalSyntaxException(String.format("Parameter for %s unspecified. (check parens)", left));
-        } else if (left != null && (currentToken.isA(TGroup.VALUE) || currentToken.isA(TT.SUB))) {
-            if (currentToken.isA(TT.SUB)) {
+                throw new IllegalSyntaxException(SyntaxErrors.FUNCTION_PARAMETER_UNDEFINED, left.toString());
+            } else if (currentToken.isA(TT.SUB)) {
                 advance();
                 if (currentToken.isA(TGroup.PREFIX, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
                     if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
@@ -67,17 +67,18 @@ public class Parser {
                     }
                     return new OperationNode(new NumberNode(new Token(TT.NUM, 0)), new Token(TT.SUB), factor());
                 }
-                throw new IllegalSyntaxException("Missing token of type: [PREFIX|VALUE|LPAREN]");
-            }
-            advance();
-            if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
-                Token function = currentToken;
+                throw new IllegalSyntaxException(SyntaxErrors.MISSING_NUMERIC_TOKEN);
+            } else if (currentToken.isA(TGroup.VALUE)) {
                 advance();
-                return new FunctionNode(function, new NumberNode(left));
+                if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
+                    Token function = currentToken;
+                    advance();
+                    return new FunctionNode(function, new NumberNode(left));
+                }
+                return new NumberNode(left);
             }
-            return new NumberNode(left);
         }
-        throw new IllegalSyntaxException("Missing token of type: [PREFIX|VALUE|LPAREN]");
+        throw new IllegalSyntaxException(SyntaxErrors.MISSING_NUMERIC_TOKEN);
     }
 
     private Node expo() throws IllegalSyntaxException {
@@ -89,7 +90,7 @@ public class Parser {
             left = new OperationNode(left, opToken, right);
         }
         if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX) || currentToken.isA(TT.RPAREN)))
-            throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
+        throw new IllegalSyntaxException(SyntaxErrors.MISSING_OPERATIONAL_TOKEN);
         return left;
     }
 
@@ -102,7 +103,7 @@ public class Parser {
             left = new OperationNode(left, opToken, right);
         }
         if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX) || currentToken.isA(TT.RPAREN)))
-            throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
+        throw new IllegalSyntaxException(SyntaxErrors.MISSING_OPERATIONAL_TOKEN);
         return left;
     }
 
@@ -115,7 +116,7 @@ public class Parser {
             left = new OperationNode(left, opToken, right);
         }
         if (!(currentToken == null || currentToken.isA(TGroup.OPERATION, TGroup.SUFFIX) || currentToken.isA(TT.RPAREN)))
-            throw new IllegalSyntaxException("Missing token of type: [OPERATION|SUFFIX|RPAREN]");
+        throw new IllegalSyntaxException(SyntaxErrors.MISSING_OPERATIONAL_TOKEN);
         return left;
     }
 

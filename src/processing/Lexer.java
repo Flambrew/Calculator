@@ -2,10 +2,12 @@ package src.processing;
 
 import java.util.ArrayList;
 
+import src.exceptions.IllegalArgumentException;
 import src.exceptions.IllegalSyntaxException;
 import src.exceptions.IllegalTokenException;
-
+import src.exceptions.IllegalSyntaxException.SyntaxErrors;
 import src.tokens.Token;
+import src.tokens.TGroup;
 import src.tokens.TT;
 
 public class Lexer {
@@ -14,15 +16,18 @@ public class Lexer {
     private String currentCharacter;
     private Integer position;
 
-    public Token[] createTokens(String in) throws IllegalTokenException, IllegalSyntaxException {
+    public Token[] createTokens(String in) throws IllegalTokenException, IllegalSyntaxException, IllegalArgumentException {
+        if (in == null || in.matches("^ *$")) {
+            throw new IllegalArgumentException();
+        }
         this.text = in.replaceAll("[\\[\\{]", "(").replaceAll("[\\]\\}]", ")");
         this.position = -1;
         advance();
         ArrayList<Token> tokens = new ArrayList<Token>();
         while (currentCharacter != null) {
             if (!verifyParens()) {
-                throw new IllegalSyntaxException("Mismatched parens.");
-            } else if (currentCharacter.matches("[ \t]")) {
+                throw new IllegalSyntaxException(SyntaxErrors.MISMATCHED_PARENS);
+            } else if (currentCharacter.matches("[ \\t]")) {
                 advance();
             } else if (currentCharacter.matches("[0-9]")) {
                 tokens.add(parseNumber());
@@ -56,10 +61,15 @@ public class Lexer {
                 tokens.add(new Token(TT.RPAREN));
                 advance();
             } else {
-                throw new IllegalTokenException(String.format("Token \"%s\" is invalid.", currentCharacter));
+                throw new IllegalTokenException(currentCharacter);
             }
         }
-        return tokens.toArray(new Token[tokens.size()]);
+        for (Token t : tokens) {
+            if (!t.isA(TGroup.PAREN)) {
+                return tokens.toArray(new Token[tokens.size()]);
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
     private boolean verifyParens() {

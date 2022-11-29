@@ -12,12 +12,12 @@ public class FunctionNode extends Node {
     }
 
     public FunctionNode(Token function, Node expression) {
-        super(null, function.TOKEN_TYPE);
+        super(function.TOKEN_TYPE);
         this.EXPRESSION = expression;
     }
 
     public FunctionNode(TT function, Node expression) {
-        super(null, function);
+        super(function);
         this.EXPRESSION = expression;
     }
 

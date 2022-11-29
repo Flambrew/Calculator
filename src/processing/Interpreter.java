@@ -10,12 +10,20 @@ public class Interpreter {
 
     public NumberNode calculate(Node node, Variable... givenValues) throws IllegalOperationException {
 
-        if (node instanceof NumberNode) 
-            return new NumberNode(node.VALUE);
-        while (node.parts() != null && !(node.parts()[0] instanceof NumberNode || node.parts()[1] instanceof NumberNode)) {
+        if (node instanceof NumberNode)
+            if (node.VALUE != null)
+                return new NumberNode(node.VALUE);
+        for (Variable var : givenValues) {
+            if (node.VARIABLE.NAME.equals(var.getNAME())) {
+                return new NumberNode(node.VARIABLE.VALUE);
+            }
+        }
+        while (node.parts() != null
+                && !(node.parts()[0] instanceof NumberNode || node.parts()[1] instanceof NumberNode)) {
             if (node instanceof OperationNode)
-                node = calculate(new OperationNode(calculate(node.parts()[0].clone()), node.parts()[1], node.parts()[2]));
-            else if (node instanceof FunctionNode) 
+                node = calculate(
+                        new OperationNode(calculate(node.parts()[0].clone()), node.parts()[1], node.parts()[2]));
+            else if (node instanceof FunctionNode)
                 node = calculate(new FunctionNode(node.parts()[0].OPERATOR, calculate(node.parts()[1].clone())));
         }
 
@@ -64,7 +72,9 @@ public class Interpreter {
                         return new NumberNode(Math.exp(operand));
                     case FAC:
                         if (Math.abs(operand - (int) operand) > 0.000001)
-                            throw new IllegalOperationException("Cannot compute the factorial of a rational expression.");
+                            throw new IllegalOperationException("the factorial of a rational expression");
+                        if (operand <= 0)
+                            throw new IllegalOperationException("the factorial of a non-positive number");
                         double out = 1;
                         for (int i = 1; i <= operand; i++)
                             out *= i;

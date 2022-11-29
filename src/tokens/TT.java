@@ -27,13 +27,13 @@ public enum TT {
     POW(TGroup.OPERATION),
     MOD(TGroup.OPERATION);
 
-    private TGroup group;
+    private final TGroup GROUP;
 
     TT(TGroup group) {
-        this.group = group;
+        this.GROUP = group;
     }
 
     public boolean isA(TGroup group) {
-        return this.group == group;
+        return this.GROUP == group;
     }
 }

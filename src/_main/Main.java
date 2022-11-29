@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 
+import src.exceptions.IllegalArgumentException;
 import src.exceptions.IllegalOperationException;
 import src.exceptions.IllegalSyntaxException;
 import src.exceptions.IllegalTokenException;
@@ -22,16 +23,19 @@ public class Main {
 
         try {
             String function = args.length > 0 ? args[0] : JOptionPane.showInputDialog("Input equation:");
-            JOptionPane.showMessageDialog(null,
-                    String.format("%s = %s", function, df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE)));
+            JOptionPane.showMessageDialog(null, String.format("%s = %s", function,
+                    df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE)));
 
-            System.out.printf("%s = %s", function, df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE));
+            // System.out.printf("%s = %s", function,
+            // df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE));
 
         } catch (IllegalTokenException e) {
             e.printStackTrace();
         } catch (IllegalSyntaxException e) {
             e.printStackTrace();
         } catch (IllegalOperationException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }

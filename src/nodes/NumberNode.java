@@ -5,16 +5,12 @@ import src.tokens.Token;
 
 public class NumberNode extends Node {
 
-    private final Token VARIABLE;
-
     public NumberNode(Token token) {
-        super(token.isA(TT.NUM) ? token.VALUE : null, null);
-        this.VARIABLE = token.isA(TT.NUM) ? null : token;
+        super(token.isA(TT.NUM) ? token.VALUE : null, token.isA(TT.NUM) ? null : token);
     }
 
     public NumberNode(Double value) {
         super(value, null);
-        this.VARIABLE = null;
     }
 
     public Node[] parts() {

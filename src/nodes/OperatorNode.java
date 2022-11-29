@@ -7,7 +7,7 @@ public class OperatorNode extends Node {
     public final Token OPERATOR;
 
     public OperatorNode(Token token) {
-        super(null, token.TOKEN_TYPE);
+        super(token.TOKEN_TYPE);
         this.OPERATOR = token;
     }
 
