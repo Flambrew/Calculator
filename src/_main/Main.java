@@ -4,6 +4,8 @@ import src.processing.Interpreter;
 import src.processing.Lexer;
 import src.processing.Parser;
 
+import java.text.DecimalFormat;
+
 import javax.swing.JOptionPane;
 
 import src.exceptions.IllegalOperationException;
@@ -16,11 +18,14 @@ public class Main {
         Parser pr = new Parser();
         Interpreter in = new Interpreter();
 
+        DecimalFormat df = new DecimalFormat("#.#");
+
         try {
             String function = args.length > 0 ? args[0] : JOptionPane.showInputDialog("Input equation:");
-            JOptionPane.showMessageDialog(null, String.format("%s = %f", function, in.calculate(pr.parse(lx.createTokens(function))).VALUE));
+            JOptionPane.showMessageDialog(null,
+                    String.format("%s = %s", function, df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE)));
 
-            System.out.printf("%s = %f", function, in.calculate(pr.parse(lx.createTokens(function))).VALUE);
+            System.out.printf("%s = %s", function, df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE));
 
         } catch (IllegalTokenException e) {
             e.printStackTrace();
