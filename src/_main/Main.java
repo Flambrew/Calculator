@@ -8,13 +8,10 @@ import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 
-import src.exceptions.IllegalArgumentException;
-import src.exceptions.IllegalOperationException;
-import src.exceptions.IllegalSyntaxException;
-import src.exceptions.IllegalTokenException;
+import src.exceptions.CalculatorException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         Lexer lx = new Lexer();
         Parser pr = new Parser();
         Interpreter in = new Interpreter();
@@ -29,14 +26,10 @@ public class Main {
             // System.out.printf("%s = %s", function,
             // df.format(in.calculate(pr.parse(lx.createTokens(function))).VALUE));
 
-        } catch (IllegalTokenException e) {
+        } catch (CalculatorException e) {
+            JOptionPane.showMessageDialog(null, e.ERROR_MESSAGE);
             e.printStackTrace();
-        } catch (IllegalSyntaxException e) {
-            e.printStackTrace();
-        } catch (IllegalOperationException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            main();
         }
     }
 }
