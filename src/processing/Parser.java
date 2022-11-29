@@ -26,7 +26,7 @@ public class Parser {
 
     private Node factor() throws IllegalSyntaxException { // TODO implement variables
         Token left = currentToken;
-        if (left.isA(TGroup.PREFIX)) {
+        if (left != null && left.isA(TGroup.PREFIX)) {
             advance();
             if (currentToken.isA(TT.LPAREN)) {
                 advance();
@@ -42,7 +42,7 @@ public class Parser {
                 }
             }
             throw new IllegalSyntaxException(String.format("Parameter for %s unspecified. (check parens)", left));
-        } else if (currentToken.isA(TT.LPAREN)) {
+        } else if (left != null && currentToken.isA(TT.LPAREN)) {
             advance();
             Node value = expression();
             if (currentToken.isA(TT.RPAREN)) {
@@ -55,7 +55,7 @@ public class Parser {
                 return new FunctionNode(value);
             }
             throw new IllegalSyntaxException(String.format("Parameter for %s unspecified. (check parens)", left));
-        } else if (currentToken.isA(TGroup.VALUE) || currentToken.isA(TT.SUB)) {
+        } else if (left != null && (currentToken.isA(TGroup.VALUE) || currentToken.isA(TT.SUB))) {
             if (currentToken.isA(TT.SUB)) {
                 advance();
                 if (currentToken.isA(TGroup.PREFIX, TGroup.VALUE) || currentToken.isA(TT.LPAREN)) {
@@ -69,7 +69,6 @@ public class Parser {
                 }
                 throw new IllegalSyntaxException("Missing token of type: [PREFIX|VALUE|LPAREN]");
             }
-            left = currentToken;
             advance();
             if (currentToken != null && currentToken.isA(TGroup.SUFFIX)) {
                 Token function = currentToken;

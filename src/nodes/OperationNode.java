@@ -23,7 +23,7 @@ public class OperationNode extends Node {
     }
 
     public OperationNode clone() {
-        return new OperationNode(RIGHT_NODE.clone(), OP_TOKEN, LEFT_NODE.clone());
+        return new OperationNode(LEFT_NODE.clone(), OP_TOKEN, RIGHT_NODE.clone());
     }
 
     public String toString() {
